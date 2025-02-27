@@ -9,3 +9,9 @@ dev:
 	cd BE && \
 	. venv/bin/activate && \
 	python app.py
+
+example:
+	cd BE && \
+	. venv/bin/activate && \
+	cd example && \
+	python openAI.py
