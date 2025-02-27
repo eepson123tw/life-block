@@ -12,6 +12,8 @@ load_dotenv()
 
 # Get API key from environment
 openai_api_key = os.environ.get("OPENAI_API_KEY")
+if not openai_api_key:
+    raise ValueError("OPENAI_API_KEY not set in environment.")
 
 # Initialize the LLM model
 model = LiteLLMModel(

@@ -21,7 +21,7 @@ import time
 import logging
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any, Generator, Union, Callable
+from typing import Optional, List, Generator
 
 from smolagents.agent_types import AgentAudio, AgentImage, AgentText, handle_agent_output_types
 from smolagents.agents import ActionStep, MultiStepAgent
@@ -263,8 +263,10 @@ def pull_messages_from_step(
         if step_log.step_number is not None:
             step_footnote.append(f"Step {step_log.step_number}")
             
-        if hasattr(step_log, "input_token_count") and hasattr(step_log, "output_token_count"):
-            if step_log.input_token_count and step_log.output_token_count:
+        if (hasattr(step_log, "input_token_count")
+            and hasattr(step_log, "output_token_count")
+            and step_log.input_token_count
+            and step_log.output_token_count):
                 step_footnote.append(
                     f"Input tokens: {step_log.input_token_count:,} | Output tokens: {step_log.output_token_count:,}"
                 )
@@ -602,7 +604,7 @@ class GradioUI:
                         )
             
             # Set up event handlers for chat interaction
-            submit_event = text_input.submit(
+            text_input.submit(
                 self.log_user_message,
                 [text_input, file_uploads_log],
                 [stored_messages, text_input],
