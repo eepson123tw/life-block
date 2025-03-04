@@ -31,6 +31,7 @@ BE/.coverage.*
 BE/coverage.xml
 BE/*.cover
 BE/.hypothesis/
+BE/example/.gradio
 
 # JavaScript/TypeScript - Frontend
 FE/node_modules/
