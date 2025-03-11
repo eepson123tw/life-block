@@ -6,7 +6,7 @@ from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
 # Add parent directory to the Python path to find Gradio_UI
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from tools.intro import greeting
+from BE.tools.test import greeting
 from Gradio_UI import GradioUI
 
 # Load environment variables
