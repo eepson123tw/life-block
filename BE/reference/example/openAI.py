@@ -36,5 +36,5 @@ agent = CodeAgent(
     description=None,
 )
 
-# Launch the Gradio UI
-GradioUI(agent).launch()
+
+
