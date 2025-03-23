@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
+from life.tools import GreetingTools
 
 # Import the agent utilities
 from .utils import run_agent, stream_from_agent
@@ -35,16 +36,18 @@ model = LiteLLMModel(
     api_key=openai_api_key
 )
 
+greeting = GreetingTools(systemPrompt='you are a Greeting agent')
+
 # Create the agent
 agent = CodeAgent(
-    tools=[DuckDuckGoSearchTool()],
+    tools=[DuckDuckGoSearchTool(),greeting],
     model=model,
     add_base_tools=True,
-    max_steps=6,
+    max_steps=5,
     verbosity_level=1,
     grammar=None,
     planning_interval=None,
-    name='OPENAIAGENT',
+    name=None,
     description=None,
 )
 
