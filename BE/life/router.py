@@ -7,9 +7,8 @@ from fastapi import APIRouter, HTTPException, FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
-from life.tools import GreetingTools
+from life.tools import GreetingTools,SearchingAgent
 from life.utils.extract import get_system_prompt,get_managed_agent_config,get_planning_config
-from life.utils.template import PlanningPromptTemplate
 
 # Import the agent utilities
 from .utils.utils import run_agent, stream_from_agent
@@ -29,6 +28,7 @@ logger = logging.getLogger(__name__)
 
 # Get API key
 openai_api_key = os.environ.get("OPENAI_API_KEY")
+
 if not openai_api_key:
     raise ValueError("OPENAI_API_KEY not set in environment.")
 
@@ -42,14 +42,16 @@ greeting = GreetingTools(systemPrompt='you are a Greeting agent')
 
 # Create the agent
 agent = CodeAgent(
-    tools=[DuckDuckGoSearchTool(),greeting],
     model=model,
-    max_steps=5,
+    max_steps=20,
     verbosity_level=1,
     grammar=None, #  Grammar used to parse the LLM output.
     planning_interval=3, # Interval at which the agent will run a planning step.
     name=None,
     description=None,
+    managed_agents=[SearchingAgent],
+    additional_authorized_imports=["time", "numpy", "pandas"],
+    tools=[greeting],
     # executor_kwargs # Additional arguments to pass to initialize the executor.
     # executor_type="" # Which executor type to use between "local", "e2b", or "docker".
     # max_print_outputs_length
