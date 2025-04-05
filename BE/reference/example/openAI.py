@@ -7,7 +7,7 @@ from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from BE.tools.test import greeting
-from Gradio_UI import GradioUI
+from BE.reference.Gradio_UI import GradioUI
 
 # Load environment variables
 load_dotenv()

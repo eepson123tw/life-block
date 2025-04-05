@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from smolagents import LiteLLMModel, CodeAgent
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from e2b_code_interpreter import Sandbox
-from Gradio_UI import GradioUI
+from BE.reference.Gradio_UI import GradioUI
 
 # Load environment variables
 load_dotenv()
