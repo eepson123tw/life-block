@@ -1,9 +1,12 @@
 import logging
 import uvicorn
+import langfuse
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from life.router import router as LifeRouter
+
 
 logging.basicConfig(
     level=logging.INFO,
