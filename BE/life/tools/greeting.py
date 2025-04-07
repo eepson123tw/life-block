@@ -1,7 +1,6 @@
 from smolagents import tool,Tool
 from langdetect import detect
 
-
 class GreetingTools(Tool):
 	"""A simple Greeting tools to let agent help to make a Greeting"""
 	inputs = {

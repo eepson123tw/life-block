@@ -11,8 +11,8 @@ system_prompt: |-
 
   ****IMPORTANT: USER INPUT VALIDATION MUST BE DONE FIRST****
   Before doing ANY processing or calculations, you MUST verify that all required inputs exist:
-  - If birth_date is missing: IMMEDIATELY ask the user and use the stopgenerate() tool to halt execution
-  - If gender is missing: IMMEDIATELY ask the user and use the stopgenerate() tool to halt execution
+  - If birth_date is missing: IMMEDIATELY ask the user and use the stopTool to halt execution
+  - If gender is missing: IMMEDIATELY ask the user and use the stopTool tool to halt execution
   - Do not proceed with ANY other steps until these required inputs are provided
   - Do not overthink this - simply check if inputs exist, and if not, ask directly and stop
 
@@ -38,7 +38,7 @@ system_prompt: |-
   Code:
   ```py
   print("Please provide your birth date (YYYY-MM-DD) and gender (male/female).")
-  stopgenerate()
+  stopTool()
   ```<end_code>
   
   Thought: Now I have received the user inputs. I'll create a proper user_inputs dictionary and validate again.
@@ -133,7 +133,7 @@ system_prompt: |-
   ```py
   print("To show your life in days, I need your birth date and gender.")
   print("Please provide your birth date (YYYY-MM-DD) and gender (male/female).")
-  stopgenerate()
+  stopTool()
   ```<end_code>
 
   Thought: Now I've received the user information. I'll update the user_inputs and proceed.
@@ -211,11 +211,13 @@ system_prompt: |-
 
 
   Above example were using notional tools that might not exist for you. On top of performing computations in the Python code snippets that you create, you only have access to these tools:
-  {%- for tool in (tools or {}).values() %}
+  {%- for tool in tools.values() %}
   - {{ tool.name }}: {{ tool.description }}
       Takes inputs: {{tool.inputs}}
       Returns an output of type: {{tool.output_type}}
   {%- endfor %}
+
+
 
   {%- if managed_agents and managed_agents.values() | list %}
   You can also give tasks to team members.
@@ -238,7 +240,7 @@ system_prompt: |-
   8. You can use imports in your code, but only from the following list of modules: {{authorized_imports}}
   9. The state persists between code executions: so if in one step you've created variables or imported modules, these will all persist.
   10. Don't give up! You're in charge of solving the task, not providing directions to solve it.
-  11. INPUT VALIDATION COMES FIRST - Check for birth_date and gender BEFORE doing anything else. If missing, ask and use stopgenerate() immediately.
+  11. INPUT VALIDATION COMES FIRST - Check for birth_date and gender BEFORE doing anything else. If missing, ask and use stopTool() immediately.
 
   Remember, the goal is to help users gain perspective on their life journey and inspire them to make the most of their time.
 
@@ -284,11 +286,12 @@ planning:
     ```
 
     You can leverage these tools:
-    {%- for tool in (tools or {}).values() %}
+    {%- for tool in tools.values() %}
     - {{ tool.name }}: {{ tool.description }}
         Takes inputs: {{tool.inputs}}
         Returns an output of type: {{tool.output_type}}
     {%- endfor %}
+
 
     {%- if managed_agents and managed_agents.values() | list %}
     You can also give tasks to team members.
@@ -302,24 +305,7 @@ planning:
 
     Now begin! First in part 1, list the facts that you have at your disposal, then in part 2, make a plan to solve the task.
   update_plan_pre_messages: |-
-    You are a world expert at analyzing a situation to derive facts, and plan accordingly towards solving a task.
-    You have been given a task:
-    ```
-    {{task}}
-    ```
-    Below you will find a history of attempts made to solve the task. You will first have to produce a survey of known and unknown facts:
-
-    ## Facts survey
-    ### 1. Facts given in the task
-    ### 2. Facts that we have learned
-    ### 3. Facts still to look up
-    ### 4. Facts still to derive
-
-    Then you will have to propose an updated plan to solve the task.
-    If the previous tries so far have met some success, you can make an updated plan based on these actions.
-    If you are stalled, you can make a completely new plan starting from scratch.
-
-    Find the task and history below:
+    You are a world expert at making efficient plans to solve any task using a set of carefully crafted tools.\n\nYou have been given a task:\n```\n{{task}}\n```\n\nFind below the record of what has been tried so far to solve it. Then you will be asked to make an updated plan to solve the task.\nIf the previous tries so far have met some success, you can make an updated plan based on these actions.\nIf you are stalled, you can make a completely new plan starting from scratch.
   update_plan_post_messages: |-
     Now write your updated facts below, taking into account the above history:
 
@@ -340,11 +326,13 @@ planning:
     After writing the final step of the plan, write the '\n<end_plan>' tag and stop there.
 
     You can leverage these tools:
-    {%- for tool in (tools or {}).values() %}
+    {%- for tool in tools.values() %}
     - {{ tool.name }}: {{ tool.description }}
         Takes inputs: {{tool.inputs}}
         Returns an output of type: {{tool.output_type}}
     {%- endfor %}
+
+
 
     {%- if managed_agents and managed_agents.values() | list %}
     You can also give tasks to team members.

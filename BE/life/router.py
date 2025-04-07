@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
-from life.tools import GreetingTools,SearchingAgent
+from life.tools import GreetingTools,SearchingAgent,StopStepTools
 from life.utils.extract import get_system_prompt,get_managed_agent_config,get_planning_config
 
 # Import the agent utilities
@@ -38,12 +38,13 @@ model = LiteLLMModel(
     api_key=openai_api_key
 )
 
-greeting = GreetingTools(systemPrompt='you are a Greeting agent')
+greetingTool = GreetingTools(systemPrompt='you are a Greeting agent')
+stopTool = StopStepTools()
 
 # Create the agent
 agent = CodeAgent(
     model=model,
-    max_steps=20,
+    max_steps=10,
     verbosity_level=1,
     grammar=None, #  Grammar used to parse the LLM output.
     planning_interval=3, # Interval at which the agent will run a planning step.
@@ -51,14 +52,14 @@ agent = CodeAgent(
     description=None,
     managed_agents=[SearchingAgent],
     additional_authorized_imports=["time", "numpy", "pandas"],
-    tools=[greeting],
+    tools=[greetingTool,stopTool],
     # executor_kwargs # Additional arguments to pass to initialize the executor.
     # executor_type="" # Which executor type to use between "local", "e2b", or "docker".
     # max_print_outputs_length
 )
 # prompt config
 agent.prompt_templates["system_prompt"] = get_system_prompt('prompts.yaml')
-agent.prompt_templates["planning"] = get_planning_config('prompts.yaml')
+# agent.prompt_templates["planning"] = get_planning_config('prompts.yaml')
 agent.prompt_templates["managed_agent"] = get_managed_agent_config('prompts.yaml')
 
 # rich tree visualization of the agent’s structure.

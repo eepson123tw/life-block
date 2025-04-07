@@ -4,6 +4,7 @@ from smolagents import (
     HfApiModel,
     GoogleSearchTool,
     LiteLLMModel,
+    DuckDuckGoSearchTool,
 )
 import os
 import re
@@ -50,7 +51,7 @@ model = LiteLLMModel(
     api_key=openai_api_key
 )
 web_agent = ToolCallingAgent(
-    tools=[GoogleSearchTool(), visit_webpage],
+    tools=[DuckDuckGoSearchTool(), visit_webpage],
     model=model,
     max_steps=5,
     planning_interval=20,

@@ -276,6 +276,7 @@ def run_agent(
     try:
         # Run agent and process each step
         for step_log in agent.run(task, stream=True, reset=reset_agent_memory, additional_args=additional_args):
+            print(agent.tools,"123123123123123123")
             # Track token counts if available
             if hasattr(agent.model, "last_input_token_count"):
                 total_input_tokens += agent.model.last_input_token_count
