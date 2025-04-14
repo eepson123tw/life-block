@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
-from life.tools import GreetingTools,SearchingAgent,StopStepTools
+from life.tools import GreetingTools,SearchingAgent,StopStepTools,FinalAnswerTool
 from life.utils.extract import get_system_prompt,get_managed_agent_config,get_planning_config
 
 # Import the agent utilities
@@ -40,19 +40,20 @@ model = LiteLLMModel(
 
 greetingTool = GreetingTools(systemPrompt='you are a Greeting agent')
 stopTool = StopStepTools()
+finalAnswer = FinalAnswerTool()
 
 # Create the agent
 agent = CodeAgent(
     model=model,
-    max_steps=10,
+    max_steps=7,
     verbosity_level=1,
     grammar=None, #  Grammar used to parse the LLM output.
     planning_interval=3, # Interval at which the agent will run a planning step.
     name=None,
     description=None,
-    managed_agents=[SearchingAgent],
+    # managed_agents=[SearchingAgent],
     additional_authorized_imports=["time", "numpy", "pandas"],
-    tools=[greetingTool,stopTool],
+    tools=[greetingTool,stopTool,finalAnswer],
     # executor_kwargs # Additional arguments to pass to initialize the executor.
     # executor_type="" # Which executor type to use between "local", "e2b", or "docker".
     # max_print_outputs_length
