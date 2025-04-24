@@ -7,11 +7,11 @@ from fastapi import APIRouter, HTTPException, FastAPI
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from smolagents import CodeAgent, LiteLLMModel,DuckDuckGoSearchTool
-from life.tools import GreetingTools,SearchingAgent,StopStepTools,FinalAnswerTool
-from life.utils.extract import get_system_prompt,get_managed_agent_config,get_planning_config
+from tools import GreetingTools,SearchingAgent,StopStepTools,FinalAnswerTool
+from utils.extract import get_system_prompt,get_managed_agent_config,get_planning_config
 
 # Import the agent utilities
-from .utils.utils import run_agent, stream_from_agent
+from utils.utils import run_agent, stream_from_agent
 
 # Add parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,7 +51,7 @@ agent = CodeAgent(
     planning_interval=3, # Interval at which the agent will run a planning step.
     name=None,
     description=None,
-    # managed_agents=[SearchingAgent],
+    managed_agents=[SearchingAgent],
     additional_authorized_imports=["time", "numpy", "pandas"],
     tools=[greetingTool,stopTool,finalAnswer],
     # executor_kwargs # Additional arguments to pass to initialize the executor.

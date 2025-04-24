@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional, TypedDict
-from smolagents.tools import Tool
+from smolagents import tool,Tool
 
 
 class FinalAnswer(TypedDict):

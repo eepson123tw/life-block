@@ -10,7 +10,7 @@ from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 
 from opentelemetry import trace
 
-# Get your own keys from https://cloud.langfuse.com
+
 
 LANGFUSE_PUBLIC_KEY = os.environ.get("LANGFUSE_PUBLIC_KEY")
 LANGFUSE_SECRET_KEY= os.environ.get("LANGFUSE_SECRET_KEY")
